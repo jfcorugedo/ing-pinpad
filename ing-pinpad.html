@@ -1,0 +1,71 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../polymer/lib/elements/dom-repeat.html">
+
+<dom-module id="ing-pinpad">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+
+            .pinpad {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                margin: 10px 0 10px 0;
+            }
+
+            .pinpad > div {
+                flex: 0 0 auto;
+                width: 59px;
+                height: 59px;
+                background-repeat: no-repeat;
+                border: solid orange 1px;
+                border-radius: 50%;
+                box-sizing: border-box;
+            }
+        </style>
+        <h2>Hello!</h2>
+
+        <div class="pinpad">
+            <template is="dom-repeat" items="[[pinpad]]">
+                <div on-click="showPosition" style="background-image: url(data:image/png;base64,[[item]]);"></div>
+            </template>
+        </div>
+    </template>
+
+    <script>
+        /**
+         * `ing-pinpad`
+         * This component shows a security numeric pinpad to the user to let him introduce his secret number
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/index.html
+         */
+        class IngPinpad extends Polymer.Element {
+            static get is() {
+                return 'ing-pinpad';
+            }
+
+            static get properties() {
+                return {
+                    pinpad: {
+                        type: Array,
+                        notify: true
+                    }
+                };
+            }
+
+            showPosition(element) {
+                this.dispatchEvent(new CustomEvent('number-selected', {
+                    detail: {index: element.model.index},
+                    bubbles: true,
+                    composed: true
+                }));
+            }
+        }
+
+        window.customElements.define(IngPinpad.is, IngPinpad);
+    </script>
+</dom-module>
